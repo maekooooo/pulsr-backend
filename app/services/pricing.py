@@ -18,6 +18,18 @@ class BinancePriceProvider(PriceProvider):
             data = r.json()
             return PriceQuote(symbol=symbol, price=float(data["price"]), as_of=datetime.utcnow())
 
+class KrakenPriceProvider(PriceProvider):
+    BASE = "https://api.kraken.com"
+
+    async def get_price(self, symbol: str) -> PriceQuote:
+        url = f"{self.BASE}/0/public/Ticker"
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            r = await client.get(url, params={"pair": symbol})
+            r.raise_for_status()
+            data = r.json()
+            return PriceQuote(symbol=symbol, price=float(data["result"][symbol]["c"][0]), as_of=datetime.utcnow())
+
 def get_price_provider(kind: str) -> PriceProvider:
-    # We can add "kraken" later; for now default to binance
+    if kind == "kraken":
+        return KrakenPriceProvider()
     return BinancePriceProvider()

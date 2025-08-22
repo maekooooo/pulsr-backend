@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     ROUND_DURATION_SEC: int = 5
     # Default market pair
     MARKET_SYMBOL: str = "BTCUSDT"
-    # Price provider: "binance" | "kraken" (we’ll implement binance first)
-    PRICE_PROVIDER: str = "binance"
+    # Price provider: "binance" | "kraken"
+    PRICE_PROVIDER: str = "kraken"
 
     class Config:
         env_file = ".env"
