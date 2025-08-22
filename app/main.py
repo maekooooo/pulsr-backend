@@ -1,9 +1,21 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.core.database import Base, engine
 from app.api.routes import bets, health
 
+
 def create_app() -> FastAPI:
     app = FastAPI(title="Pulsr Backend", version="0.1.0")
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     # Create DB tables if not present (use Alembic later)
     Base.metadata.create_all(bind=engine)
 
