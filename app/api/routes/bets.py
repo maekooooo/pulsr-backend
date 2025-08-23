@@ -9,7 +9,7 @@ from app import crud
 
 router = APIRouter(prefix="/bets", tags=["bets"])
 
-@router.get("/price", response_model=PriceQuote)
+@router.get("/pricing", response_model=PriceQuote)
 async def get_current_price(symbol: str = "BTCUSDT"):
     provider = get_price_provider(settings.PRICE_PROVIDER)
     return await provider.get_price(symbol)
@@ -48,3 +48,4 @@ def get_round(round_id: int, db: Session = Depends(get_db)):
     if not row:
         raise HTTPException(status_code=404, detail="Round not found")
     return row
+
